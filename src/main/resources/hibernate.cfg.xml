@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<!-- PostgresSQL Driver -->
+		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+
+		<!-- Connection URL for PostgreSQL -->
+		<property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/rosevalley</property>
+
+		<!-- PostgreSQL username and password -->
+		<property name="hibernate.connection.username">postgres</property>
+		<property name="hibernate.connection.password">postgresql</property>
+
+		<!-- PostgreSQL Dialect -->
+		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+
+		<!-- Automatically create or update tables -->
+		<property name="hibernate.hbm2ddl.auto">update</property>
+
+		<!-- Show and format SQL in the console -->
+		<property name="show_sql">true</property>
+		<property name="format_sql">true</property>
+
+		<!-- Mappings -->
+		<mapping class="com.Tables.User"/>
+		<mapping class="com.Tables.Message"/> <!-- Ensure correct class name -->
+		<mapping class="com.Tables.Products"/>  <!-- Ensure correct class name -->
+		<mapping class="com.Tables.Cart"/>  <!-- Ensure correct class name -->
+	</session-factory>
+</hibernate-configuration>
