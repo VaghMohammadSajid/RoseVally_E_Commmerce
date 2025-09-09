@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -53,7 +53,7 @@
 													<div
 														class="d-flex flex-column align-items-center justify-content-center"
 														style="font-size: large;">Your Email</div>
-													<input type="email" name="email"
+													<input type="email" name="email" autocomplete="username"
 														class="form-control form-control-custom" required>
 												</div>
 											</div>
@@ -95,6 +95,7 @@
 			</div>
 		</section>
 	</div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 	<script>
 		$(document).ready(function() {

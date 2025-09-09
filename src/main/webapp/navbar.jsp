@@ -1,7 +1,10 @@
 <!-- login register -->
+<%@page import="com.Tables.Wishlist"%>
+<%@page import="com.Tables.Cart"%>
 <%@page import="com.Tables.User"%>
 <%@page import="com.helper.FactoryProvider"%>
 <%@page import="org.hibernate.Session"%>
+<%@page import="org.hibernate.query.Query"%>
 
 <div class="modal fade" id="login-register">
 	<div class="modal-dialog modal-dialog-centered">
@@ -254,27 +257,47 @@
 										class="text-theme fs-14">Contact</a></li>
 									<li class="menu-item menu-item-has-children">
 										<ul class="custom sub-menu d-flex justify-content-center">
+										<%
+                                            Long userId = (Long) session.getAttribute("user_id");
+                                            int wishlistCount = 0;
+                                            int cartCount = 0;
+
+                                            if (userId != null) {
+                                                Session hibSession = FactoryProvider.getFactory().openSession();
+
+                                                // Wishlist count
+                                                Query<Long> wq = hibSession.createQuery(
+                                                    "SELECT COUNT(w) FROM Wishlist w WHERE w.userId = :uid", Long.class
+                                                );
+                                                wq.setParameter("uid", userId);
+                                                Long wCount = wq.uniqueResult();
+                                                wishlistCount = (wCount != null) ? wCount.intValue() : 0;
+
+                                                // Cart count
+                                                Query<Long> cq = hibSession.createQuery(
+                                                    "SELECT COUNT(c) FROM Cart c WHERE c.userId = :uid", Long.class
+                                                );
+                                                cq.setParameter("uid", userId);
+                                                Long cCount = cq.uniqueResult();
+                                                cartCount = (cCount != null) ? cCount.intValue() : 0;
+
+                                                hibSession.close();
+                                            }
+                                        %>
+
 											<li class="menu-item"><a href="#" class="text-theme"
 												data-toggle="modal" data-target="#logout"><i
 													class="fa fa-power-off" aria-hidden="true"></i> </a></li>
 											<li class="menu-item">
-												<?php
-                                                $select_wishlist_count = mysqli_query($conn, "SELECT * FROM `wishlist` WHERE user_id = '$user_id'") or die('query failed');
-                                                $wishlist_num_rows = mysqli_num_rows($select_wishlist_count);
-                                                ?> <a
-												href="wishlist.php" class="text-theme"><i
-													class="fas fa-heart">[<?php echo $wishlist_num_rows; ?>]
+												<a
+												href="wishlist.jsp" class="text-theme"><i class="fas fa-heart">[<%= wishlistCount %>]
 												</i></a>
 											</li>
 											<li class="menu-item">
-												<?php
-                                                $select_cart_count = mysqli_query($conn, "SELECT * FROM `cart` WHERE user_id = '$user_id'") or die('query failed');
-                                                $cart_num_rows = mysqli_num_rows($select_cart_count);
-                                                ?> <a href="cart.php"
-												class="text-theme"><i class="fas fa-shopping-cart">[<?php echo $cart_num_rows; ?>]
-												</i></a>
+												<a href="cart.jsp" class="text-theme">
+                                                   <i class="fas fa-shopping-cart">[<%= cartCount %>]</i>
+                                                </a>
 											</li>
-
 										</ul>
 									</li>
 
@@ -295,27 +318,17 @@
 									data-toggle="modal" data-target="#logout"><i
 									class="fa fa-power-off" aria-hidden="true"></i></a>
 
-								<?php
-                                $select_wishlist_count = mysqli_query($conn, "SELECT * FROM `wishlist` WHERE user_id = '$user_id'") or die('query failed');
-                                $wishlist_num_rows = mysqli_num_rows($select_wishlist_count);
-                                ?>
+								<a href="wishlist.jsp"
+                                   class="text-custom-black addlisting-btn btn-border fs-14 fw-600 btn-first btn-submit"
+                                   style="border: 1px solid #6bb00b; border-radius: 24px; font-size: 20px;">
+                                   <i class="fas fa-heart">[<%= wishlistCount %>]</i>
+                                </a>
 
-								<a href="wishlist.php"
-									class="text-custom-black addlisting-btn btn-border  fs-14 fw-600 btn-first btn-submit"
-									style="border: 1px solid #6bb00b; border-radius: 24px 24px 24px 24px; font-size: 20px;"><i
-									class="fas fa-heart">[<?php echo $wishlist_num_rows; ?>]
-								</i></a>
-
-								<?php
-                                $select_cart_count = mysqli_query($conn, "SELECT * FROM `cart` WHERE user_id = '$user_id'") or die('query failed');
-                                $cart_num_rows = mysqli_num_rows($select_cart_count);
-                                ?>
-
-								<a href="cart.php"
-									class="text-custom-black addlisting-btn btn-border fs-14 fw-600 btn-first btn-submit"
-									style="border: 1px solid #6bb00b; border-radius: 24px 24px 24px 24px; font-size: 20px;"><i
-									class="fas fa-shopping-cart">[<?php echo $cart_num_rows; ?>]
-								</i></a>
+                                <a href="cart.jsp"
+                                   class="text-custom-black addlisting-btn btn-border fs-14 fw-600 btn-first btn-submit"
+                                   style="border: 1px solid #6bb00b; border-radius: 24px; font-size: 20px;">
+                                   <i class="fas fa-shopping-cart">[<%= cartCount %>]</i>
+                                </a>
 							</div>
 						</div>
 					</div>

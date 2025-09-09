@@ -1,35 +1,39 @@
-<!-- ✅ jQuery (loaded first and only once) -->
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"
-        integrity="sha256-3fnv4kUtpT+VdVnHTjBiQKBu97Z6iNOMrYtD4Mqs7Zk="
-        crossorigin="anonymous"></script>
+<!-- ✅ jQuery (first, correct hash) -->
+<script
+  src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
-<!-- ✅ Load Chart.js BEFORE custom.js if you're using it -->
+<!-- ✅ Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<!-- ✅ Popper -->
+<!-- ✅ Popper + Bootstrap -->
 <script src="assets/js/popper.min.js"></script>
-
-<!-- ✅ Bootstrap -->
 <script src="assets/js/bootstrap.min.js"></script>
 
-<!-- ✅ Optional UI / Sliders / Select -->
+<!-- ✅ jQuery Plugins -->
 <script src="assets/js/jquery-ui.js"></script>
 <script src="assets/js/swiper.min.js"></script>
 <script src="assets/js/slick.min.js"></script>
 <script src="assets/js/jquery.nice-select.js"></script>
-
-<!-- ✅ Jarallax -->
 <script src="assets/js/jarallax.min.js"></script>
 <script src="assets/js/jarallax-video.min.js"></script>
-
-<!-- ✅ Magnific Popup -->
 <script src="assets/js/jquery.magnific-popup.min.js"></script>
 
 <!-- ✅ Google Maps + Dependencies -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnd9JwZvXty-1gHZihMoFhJtCXmHfeRQg"></script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnd9JwZvXty-1gHZihMoFhJtCXmHfeRQg&loading=async"
+    async
+    defer>
+</script>
+<script>
+function initMap() {
+  // all your google.maps.* code must live here or in functions called from here
+  const pt = new google.maps.Point(10, 20); // ✅ safe
+}
+</script>
 <script src="assets/js/infobox.min.js"></script>
+
 <script src="assets/js/markerclusterer.js"></script>
 <script src="assets/js/custom-maps.js"></script>
 
-<!-- ✅ Your custom scripts (placed LAST) -->
+<!-- ✅ Custom scripts (always last) -->
 <script src="assets/js/custom.js"></script>
