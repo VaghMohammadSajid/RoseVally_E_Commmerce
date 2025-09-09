@@ -13,6 +13,7 @@ public class FactoryProvider {
             try {
                 // Initialize the SessionFactory
                 factory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+                System.out.println("database created");
             } catch (Throwable ex) {
                 // Log the exception and rethrow it
                 System.err.println("Initial SessionFactory creation failed." + ex);

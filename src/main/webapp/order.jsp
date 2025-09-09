@@ -1,5 +1,9 @@
-<%@page import="com.helper.FactoryProvider"%>
-<%@page import="org.hibernate.Session"%>
+<%@ page import="java.util.List" %>
+<%@ page import="com.helper.FactoryProvider"%>
+<%@ page import="org.hibernate.Session"%>
+<%@ page import="com.Tables.Orders"%>
+<%@ page import="org.hibernate.query.Query" %>
+
 <%
 Session s = FactoryProvider.getSession();
 
@@ -76,142 +80,149 @@ try {
 						<div class="tab-content">
 							<div id="grid" class="tab-pane fade show active">
 								<div class="row">
-									<?php
-                                    $select_orders = mysqli_query($conn, "SELECT * FROM `orders` WHERE user_id = '$user_id'") or die('query failed');
-                                    if (mysqli_num_rows($select_orders) > 0) {
-                                        while ($fetch_orders = mysqli_fetch_assoc($select_orders)) {
-                                    ?>
-									<form action="" method="POST"
-										class="col-lg-6 col-md-6 col-sm-6" style="padding: 10px;">
-										<div class="container">
-											<div class="property-grid-box">
-												<div class="property-grid-wrapper">
-													<div class="down-content property-grid-caption padding-20"
-														style="background-color: whitesmoke;">
-														<div class="row" style="font-size: 15px;">
-															<div
-																class="col-lg-4 d-flex justify-content-center col-md-4 label">
-																<h5 style="color: #217e08;">Your Name :</h5>
-															</div>
-															<div class="col-lg-6 col-md-6">
-																<h6 style="color: #606060;">
-																	<?php echo $fetch_orders['name']; ?>
-																</h6>
-															</div>
-														</div>
+                                    <%
+                                        Session hibSession = null;
+                                        try {
+                                           hibSession = FactoryProvider.getFactory().openSession();
+                                           Query<Orders> query = hibSession.createQuery("FROM Orders", Orders.class);
+                                           query.setMaxResults(100);
+                                           List<Orders> ordersList = query.getResultList();
 
-														<div class="row" style="font-size: 15px;">
-															<div
-																class="col-lg-4 d-flex justify-content-center col-md-46 label">
-																<h5 style="color: #217e08;">Number :</h5>
-															</div>
-															<div class="col-lg-6 col-md-6">
-																<h6 style="color: #606060;">
-																	<?php echo $fetch_orders['number']; ?>
-																</h6>
-															</div>
-														</div>
+                                            if (ordersList != null && !ordersList.isEmpty()) {
+                                                for (Orders o : ordersList) {
+                                    %>
+                                                    <form action="" method="POST"
+                                                        class="col-lg-6 col-md-6 col-sm-6" style="padding: 10px;">
+                                                        <div class="container">
+                                                            <div class="property-grid-box">
+                                                                <div class="property-grid-wrapper">
+                                                                    <div class="down-content property-grid-caption padding-20"
+                                                                        style="background-color: whitesmoke;">
+                                                                        <div class="row" style="font-size: 15px;">
+                                                                            <div
+                                                                                class="col-lg-4 d-flex justify-content-center col-md-4 label">
+                                                                                <h5 style="color: #217e08;">Your Name :</h5>
+                                                                            </div>
+                                                                            <div class="col-lg-6 col-md-6">
+                                                                                <h6 style="color: #606060;">
+                                                                                    <%= o.getName() %>
+                                                                                </h6>
+                                                                            </div>
+                                                                        </div>
 
-														<div class="row" style="font-size: 15px;">
-															<div
-																class="col-lg-4 d-flex justify-content-center col-md-4 label">
-																<h5 style="color: #217e08;">Email :</h5>
-															</div>
-															<div class="col-lg-6  col-md-6">
-																<h6 style="color: #606060;">
-																	<?php echo $fetch_orders['email']; ?>
-																</h6>
-															</div>
-														</div>
+                                                                        <div class="row" style="font-size: 15px;">
+                                                                            <div
+                                                                                class="col-lg-4 d-flex justify-content-center col-md-46 label">
+                                                                                <h5 style="color: #217e08;">Number :</h5>
+                                                                            </div>
+                                                                            <div class="col-lg-6 col-md-6">
+                                                                                <h6 style="color: #606060;">
+                                                                                    <%= o.getNumber() %>
+                                                                                </h6>
+                                                                            </div>
+                                                                        </div>
 
-														<div class="row" style="font-size: 15px;">
-															<div
-																class="col-lg-4 d-flex justify-content-center col-md-4 label">
-																<h5 style="color: #217e08;">Address :</h5>
-															</div>
-															<div class="col-lg-6  col-md-6">
-																<h6 style="color: #606060;">
-																	<?php echo $fetch_orders['address']; ?>
-																</h6>
-															</div>
-														</div>
+                                                                        <div class="row" style="font-size: 15px;">
+                                                                            <div
+                                                                                class="col-lg-4 d-flex justify-content-center col-md-4 label">
+                                                                                <h5 style="color: #217e08;">Email :</h5>
+                                                                            </div>
+                                                                            <div class="col-lg-6  col-md-6">
+                                                                                <h6 style="color: #606060;">
+                                                                                    <%= o.getEmail() %>
+                                                                                </h6>
+                                                                            </div>
+                                                                        </div>
 
-														<div class="row" style="font-size: 15px;">
-															<div
-																class="col-lg-4 d-flex justify-content-center col-md-4 label ">
-																<h5 style="color: #217e08;">Placed On :</h5>
-															</div>
-															<div class="col-lg-6  col-md-6">
-																<h6 style="color: #606060;">
-																	<?php echo $fetch_orders['placed_on']; ?>
-																</h6>
-															</div>
-														</div>
+                                                                        <div class="row" style="font-size: 15px;">
+                                                                            <div
+                                                                                class="col-lg-4 d-flex justify-content-center col-md-4 label">
+                                                                                <h5 style="color: #217e08;">Address :</h5>
+                                                                            </div>
+                                                                            <div class="col-lg-6  col-md-6">
+                                                                                <h6 style="color: #606060;">
+                                                                                    <%= o.getAddress() %>
+                                                                                </h6>
+                                                                            </div>
+                                                                        </div>
 
-														<div class="row" style="font-size: 15px;">
-															<div
-																class="col-lg-4 d-flex justify-content-center col-md-4 label">
-																<h5 style="color: #217e08;">Method :</h5>
-															</div>
-															<div class="col-lg-6 col-md-6">
-																<h6 style="color: #606060;">
-																	<?php echo $fetch_orders['method']; ?>
-																</h6>
-															</div>
-														</div>
+                                                                        <div class="row" style="font-size: 15px;">
+                                                                            <div
+                                                                                class="col-lg-4 d-flex justify-content-center col-md-4 label ">
+                                                                                <h5 style="color: #217e08;">Placed On :</h5>
+                                                                            </div>
+                                                                            <div class="col-lg-6  col-md-6">
+                                                                                <h6 style="color: #606060;">
+                                                                                    <%= o.getAddedDate() %>
+                                                                                </h6>
+                                                                            </div>
+                                                                        </div>
 
-														<div class="row" style="font-size: 15px;">
-															<div
-																class="col-lg-4 d-flex justify-content-center col-md-4 label">
-																<h5 style="color: #217e08;">Your Orders :</h5>
-															</div>
-															<div class="col-lg-6 col-md-6">
-																<h6 style="color: #606060;">
-																	<?php echo $fetch_orders['total_products']; ?>
-																</h6>
-															</div>
-														</div>
+                                                                        <div class="row" style="font-size: 15px;">
+                                                                            <div
+                                                                                class="col-lg-4 d-flex justify-content-center col-md-4 label">
+                                                                                <h5 style="color: #217e08;">Method :</h5>
+                                                                            </div>
+                                                                            <div class="col-lg-6 col-md-6">
+                                                                                <h6 style="color: #606060;">
+                                                                                    <%= o.getPaymentMethod() %>
+                                                                                </h6>
+                                                                            </div>
+                                                                        </div>
 
-														<div class="row" style="font-size: 15px;">
-															<div
-																class="col-lg-4 d-flex justify-content-center col-md-4 label">
-																<h5 style="color: #217e08;">Total Price:</h5>
-															</div>
-															<div class="col-lg-6  col-md-6">
-																<h6 class="text-custom-blue">
-																	<?php echo '₹' . $fetch_orders['total_price']; ?>
-																</h6>
-															</div>
-														</div>
+                                                                        <div class="row" style="font-size: 15px;">
+                                                                            <div
+                                                                                class="col-lg-4 d-flex justify-content-center col-md-4 label">
+                                                                                <h5 style="color: #217e08;">Your Orders :</h5>
+                                                                            </div>
+                                                                            <div class="col-lg-6 col-md-6">
+                                                                                <h6 style="color: #606060;">
+                                                                                    <%= o.getTotal_products() %>
+                                                                                </h6>
+                                                                            </div>
+                                                                        </div>
 
-														<div class="row" style="font-size: 15px;">
-															<div
-																class="col-lg-4 d-flex justify-content-center col-md-4 label">
-																<h5 style="color: #217e08;">Status :</h5>
-															</div>
-															<div class="col-lg-6 col-md-6">
-																<span
-																	style="color:
-                                                                      <?php if ($fetch_orders['payment_status'] == 'pending') {
-                                                                            echo 'tomato';
-                                                                        } else {
-                                                                            echo 'green';
-                                                                        } ?>">
-																	<?php echo $fetch_orders['payment_status']; ?>
-																</span>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</form>
-									<?php
+                                                                        <div class="row" style="font-size: 15px;">
+                                                                            <div
+                                                                                class="col-lg-4 d-flex justify-content-center col-md-4 label">
+                                                                                <h5 style="color: #217e08;">Total Price:</h5>
+                                                                            </div>
+                                                                            <div class="col-lg-6  col-md-6">
+                                                                                <h6 class="text-custom-blue">
+                                                                                    <%= '₹'+o.getTotal_price() %>
+                                                                                </h6>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="row" style="font-size: 15px;">
+                                                                            <div
+                                                                                class="col-lg-4 d-flex justify-content-center col-md-4 label">
+                                                                                <h5 style="color: #217e08;">Status :</h5>
+                                                                            </div>
+                                                                            <div class="col-lg-6 col-md-6">
+                                                                                <span style="color: <%= "pending".equals(o.getPaymentMethod()) ? "tomato" : "green" %>;">
+                                                                                    <%= o.getPaymentMethod() %>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                    <%
+                                           } // end for
+                                          } else {
+                                    %>
+                                          <h4 class="col-md-12 d-flex justify-content-center" style="color:#818781;">No Products Added Yet...!</h4>
+                                    <%
                                         }
-                                    } else {
-                                        echo '<h4 class="col-md-12 d-flex justify-content-center" style="color:#818781;">No Orders Placed Yet...!</h4>';
-                                    }
-                                    ?>
+                                      } catch(Exception e) {
+                                      e.printStackTrace();
+                                      } finally {
+                                            if(hibSession != null) hibSession.close();
+                                     }
+                                    %>
 								</div>
 							</div>
 						</div>

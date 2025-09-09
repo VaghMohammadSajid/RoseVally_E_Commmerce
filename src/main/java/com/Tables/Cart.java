@@ -24,17 +24,21 @@ public class Cart {
 	@Column(name = "P_Image")
 	private String pimage;
 
+	@Column(name = "user_id")   // adjust if your DB column name is different
+	private Long userId;
+
 	// Default constructor
 	public Cart() {
 		super();
 	}
 
 	// Constructor without manually setting the id
-	public Cart(String name, Double price, int quantity, String pimage) {
+	public Cart(String name, Double price, int quantity, String pimage, Long userId) {
 		this.name = name;
 		this.price = price;
 		this.quantity = quantity;
 		this.pimage = pimage;
+		this.userId = userId;
 	}
 
 	// Getters and Setters
@@ -76,5 +80,13 @@ public class Cart {
 
 	public void setPimage(String pimage) {
 		this.pimage = pimage;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 }

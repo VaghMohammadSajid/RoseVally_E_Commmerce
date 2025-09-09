@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.*;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +16,7 @@ import org.hibernate.Transaction;
 import com.Tables.User;
 import com.helper.FactoryProvider;
 
+@WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -33,38 +35,34 @@ public class RegisterServlet extends HttpServlet {
 		String email = request.getParameter("email");
 		String pass = request.getParameter("pass");
 
-		Session session = FactoryProvider.getFactory().openSession();
-		Transaction tx;
+        try (Session session = FactoryProvider.getFactory().openSession()) {
+            Transaction tx;
+            tx = session.beginTransaction();
+            Thread.sleep(3000);
 
-		try {
-			tx=session.beginTransaction();
-			Thread.sleep(3000);
+            // Check if user with the given email exists
+            User existingUser = session.createQuery("FROM User WHERE email = :email", User.class)
+                    .setParameter("email", email).uniqueResult();
 
-			// Check if user with the given email exists
-			User existingUser = session.createQuery("FROM User WHERE email = :email", User.class)
-					.setParameter("email", email).uniqueResult();
+            if (existingUser != null) {
+                out.println("alreadyexist");
+            } else {
+                User newUser = new User();
+                newUser.setName(name);
+                newUser.setEmail(email);
+                newUser.setPassword(pass);
+                newUser.setUserType("user");
 
-			if (existingUser != null) {
-				out.println("alreadyexist");
-			} else {
-				User newUser = new User();
-				newUser.setName(name);
-				newUser.setEmail(email);
-				newUser.setPassword(pass);
-				newUser.setUserType("user");
+                //save user
+                session.save(newUser);
 
-				//save user
-				session.save(newUser);
-				
-				out.println("done");
+                out.println("done");
 
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			out.println("Error");
-		} finally {
-			session.close();
-		}
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            out.println("Error");
+        }
 
 	}
 

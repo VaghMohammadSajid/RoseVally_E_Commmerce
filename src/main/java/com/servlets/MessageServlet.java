@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
-
+import javax.servlet.annotation.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +17,7 @@ import org.hibernate.Transaction;
 
 import com.Tables.Message;
 import com.helper.FactoryProvider;
-
+@WebServlet("/message")
 public class MessageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -48,11 +48,11 @@ public class MessageServlet extends HttpServlet {
 
 			List<Message> existingMessages = session
 					.createQuery(
-							"FROM message WHERE name = :name AND email = :email AND number = :number AND mess = :msg",
+							"FROM Message WHERE name = :name AND email = :email AND number = :number AND mess = :msg",
 							Message.class)
 					.setParameter("name", MessageName).setParameter("email", MessageEmail)
 					.setParameter("number", MessageNumber).setParameter("msg", message).getResultList();
-
+			System.out.println(existingMessages);
 			if (existingMessages.isEmpty()) {
 				// Message does not exist, insert it
 				Message newMessage = new Message();

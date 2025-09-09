@@ -210,27 +210,24 @@ try {
 					url : "MessageServlet",
 					data : f,
 					type : 'POST',
-					success : function(data, textStatus, jqXHR) {
-						console.log(data);
-						console.log("Success...")
-						$(".status").hide();
-						$(".form").show();
-						if (data.trim() == 'success') {
-							$('#msg').html("Message Sent Successfully !!")
-							$('#msg').addClass('text-success')
+					success: function(data, textStatus, jqXHR) {
+                        console.log(data);
+                        console.log("Success...");
+                        $(".status").hide();
+                        $(".form").show();
 
-						} else if (data.trim() == 'Messagesentalready') {
-							$('#msg').html("Message Sent Already!!")
-							$('#msg').addClass('text-danger')
+                        if (data.trim() == 'success') {
+                            $('#msg').html("Message Sent Successfully !!").removeClass('text-danger').addClass('text-success');
 
-						}
+                            // **Clear the form fields**
+                            $('#myform')[0].reset(); // this resets all input and textarea fields
 
-						else {
-							$('#msg').html("Something Went Wrong !!")
-
-						}
-
-					},
+                        } else if (data.trim() == 'Messagesentalready') {
+                            $('#msg').html("Message Sent Already!!").removeClass('text-success').addClass('text-danger');
+                        } else {
+                            $('#msg').html("Something Went Wrong !!").removeClass('text-success').addClass('text-danger');
+                        }
+                    },
 					error : function(jqXHR, textStatus, errorThrown) {
 						console.log(data);
 						console.log("Error...")
